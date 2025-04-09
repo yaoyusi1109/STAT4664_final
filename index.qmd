@@ -1,0 +1,25 @@
+---
+title: "Home"
+author: "Yusi"
+format: html
+editor: visual
+---
+
+# 🏠 What the paper is about
+
+This paper focuses on understanding how temperature affects the spread of malaria, specifically through the reproductive number $R_0$, which measures the potential for a disease to spread in a population $R_0$​ is a key metric: if it’s greater than 1, the disease can spread; if less than 1, it dies out. The authors are particularly interested in how temperature impacts the mosquito and parasite traits (like bite rate, mosquito mortality, and parasite development) that determine $R_0$, and how much uncertainty exists in these relationships due to limited or variable data.
+
+The big picture goal is to improve predictions about how climate change might alter malaria transmission and to figure out which traits and temperature ranges need more research to reduce uncertainty. They use malaria as a case study, but the methods could apply to other vector-borne diseases too.
+
+-----------------------------------------------------------------------
+
+# 🧪 What we try to do
+
+Focused Scope: Targeting just the mosquito biting rate a(T) keeps the project manageable. We’re not trying to replicate the full $R_0$ model, which would be computationally intensive and data-heavy.
+
+Clear Methodology: Using a Metropolis-Hastings MCMC algorithm to estimate the Brière function parameters $(c, T_0, T_m)$.
+
+Data Plan: Leveraging existing data from VectorByte or the paper’s supplementary materials, or generating synthetic data as a backup.
+
+Output Goals: Plotting mean estimates and uncertainty intervals to visualize results from the paper. 
+

@@ -1,0 +1,17 @@
+project:
+  type: book
+
+book:
+  title: "Guide"
+  chapters:
+    - index.qmd     # 👈 home page (must be listed here!)
+    - about.qmd
+    - analysis.qmd
+    - timeline.qmd
+
+format:
+  html:
+    theme: cosmo
+    self-contained: true
+    toc: true
+    toc-title: "On this page"

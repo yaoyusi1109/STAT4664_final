@@ -1,0 +1,89 @@
+---
+title: "Exploring Temperature Effects on Mosquito Biting Rate with MCMC"
+format:
+  html:
+    theme: cosmo
+    self-contained: true
+    toc: true
+    number-sections: true
+    page-layout: full
+    navbar:
+      background: light
+      left:
+        - text: "About"
+          href: "#about"
+        - text: "Timeline"
+          href: "#timeline"
+        - text: "Analysis"
+          href: "#analysis"
+---
+
+#  🏠 About
+
+*\# Key Objectives*
+
+*The authors address several critical questions:*
+
+*- \*\*Temperature Thresholds\*\*: Which temperatures prevent or promote malaria transmission?*
+
+*- \*\*Uncertainty Quantification\*\*: How uncertain are \\( R_0 \\) estimates across different temperatures?*
+
+*- \*\*Trait Contributions\*\*: Which mosquito and parasite traits contribute most to this uncertainty, and at what temperature ranges?*
+
+*The study uses malaria as a case study, but its methods are broadly applicable to other vector-borne diseases.*
+
+*\# Main Findings*
+
+*The paper decomposes \\( R_0 \\) into temperature-dependent components—like mosquito biting rate, fecundity, mortality, and parasite development rate—and uses a Bayesian approach to model their thermal responses. Key findings include:*
+
+*- \*\*Biting Rate (a)\*\*: Dominates uncertainty from 15°C to 25°C, critical at lower transmission thresholds.*
+
+*- \*\*Fecundity (\$\\text{EFD}\$)\*\*: Influences uncertainty across all temperatures, especially 25°C to 32°C.*
+
+*- \*\*Mosquito Mortality (\$\\mu\$)\*\*: Drives uncertainty from 20°C to 30°C, key in the transmission peak.*
+
+*- \*\*Parasite Development Rate (\$\\text{PDR}\$)\*\*: Significant at temperature extremes (15–16°C and 33–35°C).*
+
+*These results suggest that targeting empirical research on these traits at their respective temperature ranges would most efficiently refine \\( R_0 \\) estimates, enhancing predictions of malaria dynamics under climate variability.*
+
+*\# Methodology Highlights*
+
+*The authors employ a Bayesian framework to tackle data sparsity and quantify uncertainty:*
+
+*- \*\*Model\*\*: They use the Ross-Macdonald model for malaria, where:*
+
+*\$\$R_0 = \\sqrt{\\frac{M}{N r} \\times \\frac{a\^2 \\, bc \\, \\exp(-\\mu / \\text{PDR})}{\\mu}}\$\$*
+
+*Here, \\( M = \\frac{\\text{EFD} \\, p\_{\\text{EA}} \\, \\text{MDR}}{\\mu\^2} \\) represents mosquito density, with components like \\( a \\) (biting rate), \\( \\mu \\) (mortality), and \\( \\text{PDR} \\) (parasite development rate) varying with temperature.*
+
+*- \*\*Thermal Responses\*\*: Traits are modeled with unimodal functions:*
+
+*- Brière (asymmetric) for traits like biting rate.*
+
+*- Quadratic (symmetric) for traits like mortality.*
+
+*- \*\*Bayesian Approach\*\*: Markov Chain Monte Carlo (MCMC) is used to sample posterior distributions of parameters, combining sparse lab data with priors to estimate uncertainty.*
+
+------------------------------------------------------------------------
+
+#  📅 Timeline
+
+*Paste content from `timeline.qmd` here*
+
+------------------------------------------------------------------------
+
+#  🧪 Analysis
+
+*Paste content from `analysis.qmd` here*
+
+------------------------------------------------------------------------
+
+#  📊 Results
+
+*Paste content from `results.qmd` here*
+
+------------------------------------------------------------------------
+
+#  💬 Discussion
+
+*Paste content from `discussion.qmd` here*
