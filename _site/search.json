@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "introduction.html",
+    "href": "introduction.html",
+    "title": "What the paper is about",
+    "section": "",
+    "text": "Johnson et al. (2015) present a Bayesian framework to characterize uncertainty in temperature-dependent traits that govern vector-borne disease transmission, using malaria as a case study. A key challenge in modeling malaria transmission lies in the scarcity and noisiness of empirical data for critical traits of both the parasite (Plasmodium falciparum) and the mosquito vector (Anopheles gambiae). For example, only a handful of studies report trait values like parasite development rate (PDR) or mosquito lifespan across temperature ranges, and these data often exhibit wide variability. Instead of relying on point estimates or single fitted curves, the authors turn to Bayesian inference and Markov Chain Monte Carlo (MCMC) methods to systematically capture and propagate this uncertainty.\nThe authors model individual temperature-sensitive traits such as mosquito development rate (MDR), parasite development rate (PDR), biting rate, and mosquito survival using biologically motivated unimodal functions (e.g., Brière or quadratic forms). These functions are fit to digitized trait data using uninformative priors and implemented in JAGS to sample from posterior distributions. Crucially, rather than producing a single curve per trait, their approach yields full posterior distributions of trait values at each temperature. These are then combined to generate temperature-dependent estimates of the basic reproductive number R_0, providing both median predictions and credible intervals that reflect the compound uncertainty from all input traits.\nIn our project, we replicate a core component of this modeling framework by focusing on one key trait: parasite development rate (PDR). Using publicly available trait data from the VectorByte platform, we implement the Bayesian curve-fitting process for PDR in JAGS, following the methodology in the paper. Our goal is to visualize the posterior distribution of the PDR curve over temperature and examine how limited input data leads to wide credible intervals. While we do not compute the full R_0 curve due to time and scope, this work demonstrates how uncertainty in a single trait — especially when data is limited — can ripple through broader transmission models and why a Bayesian approach is necessary in such cases."
+  },
+  {
+    "objectID": "introduction.html#abstract",
+    "href": "introduction.html#abstract",
+    "title": "What the paper is about",
+    "section": "",
+    "text": "Johnson et al. (2015) present a Bayesian framework to characterize uncertainty in temperature-dependent traits that govern vector-borne disease transmission, using malaria as a case study. A key challenge in modeling malaria transmission lies in the scarcity and noisiness of empirical data for critical traits of both the parasite (Plasmodium falciparum) and the mosquito vector (Anopheles gambiae). For example, only a handful of studies report trait values like parasite development rate (PDR) or mosquito lifespan across temperature ranges, and these data often exhibit wide variability. Instead of relying on point estimates or single fitted curves, the authors turn to Bayesian inference and Markov Chain Monte Carlo (MCMC) methods to systematically capture and propagate this uncertainty.\nThe authors model individual temperature-sensitive traits such as mosquito development rate (MDR), parasite development rate (PDR), biting rate, and mosquito survival using biologically motivated unimodal functions (e.g., Brière or quadratic forms). These functions are fit to digitized trait data using uninformative priors and implemented in JAGS to sample from posterior distributions. Crucially, rather than producing a single curve per trait, their approach yields full posterior distributions of trait values at each temperature. These are then combined to generate temperature-dependent estimates of the basic reproductive number R_0, providing both median predictions and credible intervals that reflect the compound uncertainty from all input traits.\nIn our project, we replicate a core component of this modeling framework by focusing on one key trait: parasite development rate (PDR). Using publicly available trait data from the VectorByte platform, we implement the Bayesian curve-fitting process for PDR in JAGS, following the methodology in the paper. Our goal is to visualize the posterior distribution of the PDR curve over temperature and examine how limited input data leads to wide credible intervals. While we do not compute the full R_0 curve due to time and scope, this work demonstrates how uncertainty in a single trait — especially when data is limited — can ripple through broader transmission models and why a Bayesian approach is necessary in such cases."
+  },
+  {
+    "objectID": "introduction.html#take-a-look-at-the-data",
+    "href": "introduction.html#take-a-look-at-the-data",
+    "title": "What the paper is about",
+    "section": "Take a look at the data",
+    "text": "Take a look at the data"
+  },
+  {
+    "objectID": "methods.html",
+    "href": "methods.html",
+    "title": "Materials",
+    "section": "",
+    "text": "Here we introduce the materials!"
+  },
+  {
+    "objectID": "team.html",
+    "href": "team.html",
+    "title": "Basics",
+    "section": "",
+    "text": "Here we introduce basic functionality of the package!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Stochastic Modeling of Temperature Effects on Malaria Transmission Using Vector Traits",
+    "section": "",
+    "text": "In this project, we aim to recreate a specific component of the analysis from Johnson et al. (2015), which investigates how temperature influences the transmission potential of malaria through its effect on various mosquito and parasite traits. Rather than reproducing the full reproductive number \\(R_0\\), we focus on a single temperature-sensitive trait — parasite development rate (PDR) and mosquito mortality — to explore how Bayesian inference can quantify uncertainty in that trait’s temperature response. The data for this analysis come from the VectorByte platform, which provides curated temperature-dependent trait data relevant to vector-borne diseases. By implementing and visualizing this subset of the model, we illustrate the impact of trait uncertainty on broader disease transmission dynamics, using methods and approaches aligned with those described in the original paper."
+  },
+  {
+    "objectID": "conclusions.html",
+    "href": "conclusions.html",
+    "title": "Conclusions",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+  },
+  {
+    "objectID": "conclusions.html#quarto",
+    "href": "conclusions.html#quarto",
+    "title": "Conclusions",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+  },
+  {
+    "objectID": "conclusions.html#running-code",
+    "href": "conclusions.html#running-code",
+    "title": "Conclusions",
+    "section": "Running Code",
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+  }
+]

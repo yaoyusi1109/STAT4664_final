@@ -13,5 +13,20 @@
   },
   "about.qmd": {
     "about.html": "d949eafa"
+  },
+  "materials.qmd": {
+    "materials.html": "6d04c9d8"
+  },
+  "team.qmd": {
+    "team.html": "c710f341"
+  },
+  "introduction.qmd": {
+    "introduction.html": "fe3c19f4"
+  },
+  "methods.qmd": {
+    "methods.html": "20f00e60"
+  },
+  "conclusions.qmd": {
+    "conclusions.html": "388c6825"
   }
 }
