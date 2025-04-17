@@ -1,17 +1,55 @@
 project:
-  type: book
+  type: website
 
-book:
-  title: "Guide"
-  chapters:
-    - index.qmd     # 👈 home page (must be listed here!)
-    - about.qmd
-    - analysis.qmd
-    - timeline.qmd
-
+website:
+  title: "Final Project"
+  navbar:
+    background:	"primary"
+    foreground: "light"
+    logo: "graphics/vblogoedit.png"
+    left:
+      - href: index.qmd
+        text: Executive Summary
+      - href: introduction.qmd
+        text: Introduction
+      - href: methods.qmd
+        text: Methods
+      - href: conclusions.qmd
+        text: Conlusions
+      - href: team.qmd
+        text: Statement of author contributions
+    right:
+      - icon: github
+        href: https://github.com/yaoyusi1109/STAT4664_final
+    search: TRUE
+  sidebar:
+    title: "Materials" 
+    style: "docked"
+    search: true
+    contents:
+      - text: "Materials"
+        href: materials.qmd
+      - section: "Basics"
+        href: basics-summary.qmd
+        contents:
+          - more-basics.qmd
+          - basics-knitr.qmd
+      - section: "User Options"
+        contents:
+          - layout.qmd
+          - layout-knitr.qmd
+      - section: "Advanced"
+        contents:
+          - text: "User Defined TPCs"
+            href: addingTPCs.qmd
+          - custom-theme.qmd
+      - acknowlegment.qmd        
 format:
   html:
-    theme: cosmo
-    self-contained: true
+    theme: lumen
+    css: styles.css
     toc: true
-    toc-title: "On this page"
+
+editor: source
+
+
