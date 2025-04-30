@@ -10,8 +10,12 @@ website:
     left:
       - href: index.qmd
         text: Executive Summary
+      - href: overview.qmd
+        text: Literature Overview
       - href: introduction.qmd
         text: Introduction
+      - href: mcmc.qmd
+        text: MCMC
       - href: methods.qmd
         text: Methods
       - href: conclusions.qmd

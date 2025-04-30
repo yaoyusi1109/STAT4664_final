@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Basics – Final Project</title>
+<title>overview – Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -97,7 +126,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Executive Summary</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./overview.html"> 
+    <a class="nav-link active" href="./overview.html" aria-current="page"> 
 <span class="menu-text">Literature Overview</span></a>
   </li>  
   <li class="nav-item">
@@ -117,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Conlusions</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./team.html" aria-current="page"> 
+    <a class="nav-link" href="./team.html"> 
 <span class="menu-text">Statement of author contributions</span></a>
   </li>  
 </ul>
@@ -143,34 +172,54 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#here-we-introduce-basic-functionality-of-the-package" id="toc-here-we-introduce-basic-functionality-of-the-package" class="nav-link active" data-scroll-target="#here-we-introduce-basic-functionality-of-the-package">Here we introduce basic functionality of the package!</a></li>
+  <li><a href="#what-is-this-paper-about" id="toc-what-is-this-paper-about" class="nav-link active" data-scroll-target="#what-is-this-paper-about">What Is This Paper About?</a></li>
+  <li><a href="#the-big-obstacle" id="toc-the-big-obstacle" class="nav-link" data-scroll-target="#the-big-obstacle">The Big Obstacle</a></li>
+  <li><a href="#the-solution-bayesian-inference-mcmc" id="toc-the-solution-bayesian-inference-mcmc" class="nav-link" data-scroll-target="#the-solution-bayesian-inference-mcmc">The Solution: Bayesian Inference + MCMC</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Basics</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="here-we-introduce-basic-functionality-of-the-package" class="level1">
-<h1>Here we introduce basic functionality of the package!</h1>
+<iframe src="reference/johnson_etal2015.pdf" width="100%" height="500px">
+</iframe>
+<section id="what-is-this-paper-about" class="level1">
+<h1>What Is This Paper About?</h1>
+<p>At its core, this paper tries to better understand how temperature affects the transmission of malaria, a disease caused by a parasite and spread by mosquitoes. More specifically, it looks at how different biological traits like, how fast mosquitoes grow or how quickly parasites develop, change depending on temperature.</p>
+<p>These temperature-sensitive traits are key parts of a formula called <span class="math inline">\(R_0\)</span>, which is the basic reproduction number. In simple terms, <span class="math inline">\(R_0\)</span> tells us how easily a disease can spread in a population. If <span class="math inline">\(R_0\)</span> is high, an outbreak can happen. If it’s low, the disease dies out.</p>
+<p>But to build this <span class="math inline">\(R_0\)</span> model, the authors first need to estimate how these traits behave across temperatures. And that’s where the challenge begins.</p>
+</section>
+<section id="the-big-obstacle" class="level1">
+<h1>The Big Obstacle</h1>
+<p>One of the biggest hurdles in this study is data scarcity. For many of the temperature-sensitive traits—like mosquito development rate (MDR) or parasite development rate (PDR)—the researchers had access to only about 8 to 12 usable data points in this example. That’s barely enough to fit a meaningful curve, especially if the data is spread out across temperatures or varies in quality.</p>
+<p>So, why is the data so limited?</p>
+<p><strong>Experimental constraints in lab settings</strong>. Since malaria is caused by a parasite (Plasmodium falciparum) that lives inside mosquitoes (Anopheles gambiae), studying the full transmission cycle requires infecting the mosquitoes. But under lab conditions, researchers cannot simply feed infected mosquitoes with their own blood to continue experiments, that would pose serious biohazard and ethical issues. This makes it extremely difficult to collect controlled, high-quality data for infected mosquitoes, especially across multiple temperatures.</p>
+<p>Beyond that, additional limitations include:</p>
+<ul>
+<li><p>Ethical regulations around working with human-infectious diseases.</p></li>
+<li><p>Technical difficulty of maintaining mosquitoes and parasites at constant temperatures in controlled environments.</p></li>
+<li><p>Cost and time involved in conducting these studies, especially with biological replication.</p></li>
+</ul>
+<p>As a result, the authors had to rely on a patchwork of data:</p>
+<ul>
+<li><p>Some traits came from direct lab studies on An. gambiae and P. falciparum.</p></li>
+<li><p>Others had to be pulled from related mosquito or parasite species, or from less controlled studies, just to have enough data to work with.</p></li>
+</ul>
+</section>
+<section id="the-solution-bayesian-inference-mcmc" class="level1">
+<h1>The Solution: Bayesian Inference + MCMC</h1>
+<p>To deal with the limited and messy data, Prof.Johnson and her team used Bayesian inference, a statistical approach that is especially powerful when data is sparse or uncertain. Instead of trying to force-fit a single best curve through a handful of points, the Bayesian method treats the unknown curve parameters as random variables and estimates their entire probability distribution.</p>
+<p>This is where MCMC (Markov Chain Monte Carlo) comes in. MCMC is a tool that lets you simulate samples from complicated distributions, like the posterior distribution of trait curves in this study. In simpler terms, it helps us generate many possible curves that are consistent with the data we do have—along with a sense of how confident we can be in each one.</p>
+<p>So rather than returning a single line through the data, Johnson’s model gives you:</p>
+<ul>
+<li><p>A mean curve (the best guess)</p></li>
+<li><p>Plus a 95% credible interval (a range where the “true” curve likely falls).</p></li>
+</ul>
+<p>This uncertainty is crucial. Because the biological data is so limited, we cannot pretend we know the exact trait-temperature relationship. But by using a Bayesian framework, the authors can at least show what’s plausible, based on both the data and prior biological knowledge.</p>
+<p>In our project, we adopt this same logic. Using the real (limited) data, we apply a Bayesian curve-fitting approach to recreate key trait-temperature plots from the paper, starting with MDR and PDR.</p>
 
 
 </section>

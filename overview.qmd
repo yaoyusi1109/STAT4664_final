@@ -1,0 +1,49 @@
+<iframe src="reference/johnson_etal2015.pdf" width="100%" height="500px"></iframe>
+
+# What Is This Paper About?
+
+At its core, this paper tries to better understand how temperature affects the transmission of malaria, a disease caused by a parasite and spread by mosquitoes. More specifically, it looks at how different biological traits like, how fast mosquitoes grow or how quickly parasites develop, change depending on temperature.
+
+These temperature-sensitive traits are key parts of a formula called $R_0$, which is the basic reproduction number. In simple terms, $R_0$ tells us how easily a disease can spread in a population. If $R_0$ is high, an outbreak can happen. If it’s low, the disease dies out.
+
+But to build this $R_0$ model, the authors first need to estimate how these traits behave across temperatures. And that’s where the challenge begins.
+
+# The Big Obstacle
+
+One of the biggest hurdles in this study is data scarcity. For many of the temperature-sensitive traits—like mosquito development rate (MDR) or parasite development rate (PDR)—the researchers had access to only about 8 to 12 usable data points in this example. That’s barely enough to fit a meaningful curve, especially if the data is spread out across temperatures or varies in quality.
+
+So, why is the data so limited?
+
+**Experimental constraints in lab settings**. Since malaria is caused by a parasite (Plasmodium falciparum) that lives inside mosquitoes (Anopheles gambiae), studying the full transmission cycle requires infecting the mosquitoes. But under lab conditions, researchers cannot simply feed infected mosquitoes with their own blood to continue experiments, that would pose serious biohazard and ethical issues. This makes it extremely difficult to collect controlled, high-quality data for infected mosquitoes, especially across multiple temperatures.
+
+Beyond that, additional limitations include:
+
+- Ethical regulations around working with human-infectious diseases.
+
+- Technical difficulty of maintaining mosquitoes and parasites at constant temperatures in controlled environments.
+
+- Cost and time involved in conducting these studies, especially with biological replication.
+
+As a result, the authors had to rely on a patchwork of data:
+
+- Some traits came from direct lab studies on An. gambiae and P. falciparum.
+
+- Others had to be pulled from related mosquito or parasite species, or from less controlled studies, just to have enough data to work with.
+
+# The Solution: Bayesian Inference + MCMC
+
+To deal with the limited and messy data, Prof.Johnson and her team used Bayesian inference, a statistical approach that is especially powerful when data is sparse or uncertain. Instead of trying to force-fit a single best curve through a handful of points, the Bayesian method treats the unknown curve parameters as random variables and estimates their entire probability distribution.
+
+This is where MCMC (Markov Chain Monte Carlo) comes in. MCMC is a tool that lets you simulate samples from complicated distributions, like the posterior distribution of trait curves in this study. In simpler terms, it helps us generate many possible curves that are consistent with the data we do have—along with a sense of how confident we can be in each one.
+
+So rather than returning a single line through the data, Johnson’s model gives you:
+
+- A mean curve (the best guess)
+
+- Plus a 95% credible interval (a range where the “true” curve likely falls).
+
+This uncertainty is crucial. Because the biological data is so limited, we cannot pretend we know the exact trait-temperature relationship. But by using a Bayesian framework, the authors can at least show what’s plausible, based on both the data and prior biological knowledge.
+
+In our project, we adopt this same logic. Using the real (limited) data, we apply a Bayesian curve-fitting approach to recreate key trait-temperature plots from the paper, starting with MDR and PDR.
+
+
