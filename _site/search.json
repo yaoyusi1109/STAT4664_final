@@ -86,7 +86,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Stochastic Modeling of Temperature Effects on Malaria Transmission Using Vector Traits",
+    "title": "Final Project",
     "section": "",
     "text": "In this project, we aim to recreate a specific component of the analysis from Johnson et al. (2015), which investigates how temperature influences the transmission potential of malaria through its effect on various mosquito and parasite traits. Rather than reproducing the full reproductive number \\(R_0\\), we focus on a single temperature-sensitive trait — parasite development rate (PDR) and mosquito mortality — to explore how Bayesian inference can quantify uncertainty in that trait’s temperature response. The data for this analysis come from the VectorByte platform, which provides curated temperature-dependent trait data relevant to vector-borne diseases. By implementing and visualizing this subset of the model, we illustrate the impact of trait uncertainty on broader disease transmission dynamics, using methods and approaches aligned with those described in the original paper."
   },
