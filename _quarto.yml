@@ -52,7 +52,7 @@ website:
       - acknowlegment.qmd        
 format:
   html:
-    theme: lumen
+    theme: sketchy
     css: styles.css
     toc: true
 
