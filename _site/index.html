@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Stochastic Modeling of Temperature Effects on Malaria Transmission Using Vector Traits – Final Project</title>
+<title>Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -126,17 +126,32 @@ window.Quarto = {
 <span class="menu-text">Executive Summary</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./introduction.html"> 
-<span class="menu-text">Introduction</span></a>
+    <a class="nav-link" href="./overview.html"> 
+<span class="menu-text">Literature Overview</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./methods.html"> 
-<span class="menu-text">Methods</span></a>
+    <a class="nav-link" href="./mcmc.html"> 
+<span class="menu-text">MCMC</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./conclusions.html"> 
-<span class="menu-text">Conlusions</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-method-reproduction" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Method Reproduction</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-method-reproduction">    
+        <li>
+    <a class="dropdown-item" href="./introduction.html">
+ <span class="dropdown-text">Introduction</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./methods.html">
+ <span class="dropdown-text">Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./conclusions.html">
+ <span class="dropdown-text">Conlusions</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./team.html"> 
 <span class="menu-text">Statement of author contributions</span></a>
@@ -163,27 +178,16 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Stochastic Modeling of Temperature Effects on Malaria Transmission Using Vector Traits</h1>
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/front_page.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
 </div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
 <p>In this project, we aim to recreate a specific component of the analysis from Johnson et al.&nbsp;(2015), which investigates how temperature influences the transmission potential of malaria through its effect on various mosquito and parasite traits. Rather than reproducing the full reproductive number <span class="math inline">\(R_0\)</span>, we focus on a single temperature-sensitive trait — parasite development rate (PDR) and mosquito mortality — to explore how Bayesian inference can quantify uncertainty in that trait’s temperature response. The data for this analysis come from the <a href="https://www.vectorbyte.org/">VectorByte</a> platform, which provides curated temperature-dependent trait data relevant to vector-borne diseases. By implementing and visualizing this subset of the model, we illustrate the impact of trait uncertainty on broader disease transmission dynamics, using methods and approaches aligned with those described in the original paper.</p>
 
 

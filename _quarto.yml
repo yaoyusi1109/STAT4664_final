@@ -10,12 +10,18 @@ website:
     left:
       - href: index.qmd
         text: Executive Summary
-      - href: introduction.qmd
-        text: Introduction
-      - href: methods.qmd
-        text: Methods
-      - href: conclusions.qmd
-        text: Conlusions
+      - href: overview.qmd
+        text: Literature Overview
+      - href: mcmc.qmd
+        text: MCMC
+      - text: "Method Reproduction"
+        menu:
+          - href: introduction.qmd
+            text: Introduction
+          - href: methods.qmd
+            text: Methods
+          - href: conclusions.qmd
+            text: Conlusions
       - href: team.qmd
         text: Statement of author contributions
     right:

@@ -1,15 +1,114 @@
 ---
-title: "What the paper is about"
+title: "Paper Overview"
 ---
 
 ## Abstract
 
-Johnson et al. (2015) present a Bayesian framework to characterize uncertainty in temperature-dependent traits that govern vector-borne disease transmission, using malaria as a case study. A key challenge in modeling malaria transmission lies in the scarcity and noisiness of empirical data for critical traits of both the parasite (Plasmodium falciparum) and the mosquito vector (Anopheles gambiae). For example, only a handful of studies report trait values like parasite development rate (PDR) or mosquito lifespan across temperature ranges, and these data often exhibit wide variability. Instead of relying on point estimates or single fitted curves, the authors turn to Bayesian inference and Markov Chain Monte Carlo (MCMC) methods to systematically capture and propagate this uncertainty.
+Predicting how diseases like malaria spread is a big challenge, especially as climate change shifts global temperature patterns. A key part of this prediction involves understanding how temperature affects different biological traits of mosquitoes and the parasites they carry — for example, how quickly mosquitoes develop (MDR), how fast the malaria parasite matures inside them (PDR), or how often mosquitoes bite humans. These temperature-sensitive traits are used to calculate something called the basic reproduction number, or R_0, which tells us how easily a disease can spread in a population. 
 
-The authors model individual temperature-sensitive traits such as mosquito development rate (MDR), parasite development rate (PDR), biting rate, and mosquito survival using biologically motivated unimodal functions (e.g., Brière or quadratic forms). These functions are fit to digitized trait data using uninformative priors and implemented in JAGS to sample from posterior distributions. Crucially, rather than producing a single curve per trait, their approach yields full posterior distributions of trait values at each temperature. These are then combined to generate temperature-dependent estimates of the basic reproductive number R_0, providing both median predictions and credible intervals that reflect the compound uncertainty from all input traits.
+The problem is that reliable data for these traits — especially at different temperatures — is limited and often noisy. Instead of drawing a single best-fit curve through the data, the paper we are following uses a Bayesian approach with a technique called Markov Chain Monte Carlo (MCMC) to model the uncertainty. This method creates a range of possible trait curves, not just one, and gives us a clearer picture of how confident we are in the estimates.
 
-In our project, we replicate a core component of this modeling framework by focusing on one key trait: parasite development rate (PDR). Using publicly available trait data from the VectorByte platform, we implement the Bayesian curve-fitting process for PDR in JAGS, following the methodology in the paper. Our goal is to visualize the posterior distribution of the PDR curve over temperature and examine how limited input data leads to wide credible intervals. While we do not compute the full R_0 curve due to time and scope, this work demonstrates how uncertainty in a single trait — especially when data is limited — can ripple through broader transmission models and why a Bayesian approach is necessary in such cases.
+In our project, we recreate part of this modeling framework using publicly available data from the VectorByte platform. We focus on two or three key traits: mosquito development rate (MDR), parasite development rate (PDR), and possibly mosquito bite rate. Using Bayesian methods and JAGS, we fit temperature-performance curves for these traits, visualize their uncertainty, and show how this uncertainty can impact larger models of disease transmission like R_0.
 
-## Take a look at the data
+## 1. Data Collection
 
+The authors assembled two types of datasets:
+
+- **Main data**: Laboratory data under constant temperature, focused on Anopheles gambiae and Plasmodium falciparum. These data were only available for a few traits like mosquito development rate (MDR), egg-to-adult survival (pEA), and adult mosquito mortality ($\mu$).
+- **Prior data**: A broader set that included similar traits from related species and less controlled experiments. This dataset was used to construct informative priors in the Bayesian models.
+
+### Plasmodium Falciparum
+```{r, echo=FALSE, message=FALSE}
+library(DT)
+library(readxl)
+library(readr)
+library(here)
+
+# Load both datasets
+mosquitoes1 <- read_excel(here("data", "the_one_we_need.xlsx"))
+mosquitoes2 <- read_csv(here("data", "the_one_we_need_2.csv"), show_col_types = FALSE)
+
+# Render first table
+datatable(
+  mosquitoes1,
+  options = list(
+    pageLength = 5,
+    scrollX = TRUE,
+    autoWidth = TRUE,
+    columnDefs = list(
+      list(width = '35px', targets = "_all")
+    )
+  ),
+  class = 'compact stripe hover',
+  rownames = FALSE,
+  filter = 'top',
+  callback = JS(
+    "$('table.dataTable').css({'font-size': '13px'});",
+    "$('table.dataTable tbody td').css({'padding': '5px'});"
+  )
+)
+```
+
+### Anopheles Gambiae
+```{r, echo=FALSE, message=FALSE}
+# Render second table
+datatable(
+  mosquitoes2,
+  options = list(
+    pageLength = 5,
+    scrollX = TRUE,
+    autoWidth = TRUE,
+    columnDefs = list(
+      list(width = '35px', targets = "_all")
+    )
+  ),
+  class = 'compact stripe hover',
+  rownames = FALSE,
+  filter = 'top',
+  callback = JS(
+    "$('table.dataTable').css({'font-size': '13px'});",
+    "$('table.dataTable tbody td').css({'padding': '5px'});"
+  )
+)
+```
+
+## 2. Modeling Thermal Responses
+
+Each biological trait (component of the basic reproductive number, R₀) was modeled as a **unimodal response to temperature**, typically hump-shaped.
+
+Two types of thermal performance functions were used:
+
+- **Brière Model** (asymmetric, for traits like MDR):
+  $$
+  f(T) = a \cdot T \cdot (T - T_0) \cdot \sqrt{T_m - T}
+  $$
+
+- **Quadratic Model** (symmetric, for other traits):
+  $$
+  f(T) = -a \cdot (T - T_{opt})^2 + b
+  $$
+
+Choice of function was based on the biological properties of each trait.
+
+## 3. Likelihoods and Constraints
+
+- Most traits used a **truncated normal likelihood**, which ensures outputs are biologically feasible 
+
+- For probability traits (like vector competence or survival), the authors used a **binomial likelihood** when raw counts were available.
+
+- All values were constrained within biologically meaningful ranges. For example, traits expressed as probabilities were constrained to [0, 1].
+
+## 4. Bayesian Inference Workflow
+
+Each trait was modeled individually with the following steps:
+
+1. **Define the likelihood** using the selected functional form (Brière or quadratic).
+2. **Assign priors**:
+   - Start with **uninformative priors** (flat/diffuse).
+   - Later use **informative priors** derived from the prior dataset and expert opinion.
+3. **Run MCMC** in **JAGS** to sample from the posterior distribution of parameters:
+   - Brière: `a`, `T₀`, `Tₘ`, `σ`
+4. **Generate fitted curves** using the posterior draws:
+   - Median curve (posterior mean)
+   - 95% credible interval envelope
 
