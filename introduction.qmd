@@ -1,23 +1,17 @@
----
-title: "Paper Overview"
----
-
 ## Abstract
 
 Predicting how diseases like malaria spread is a big challenge, especially as climate change shifts global temperature patterns. A key part of this prediction involves understanding how temperature affects different biological traits of mosquitoes and the parasites they carry — for example, how quickly mosquitoes develop (MDR), how fast the malaria parasite matures inside them (PDR), or how often mosquitoes bite humans. These temperature-sensitive traits are used to calculate something called the basic reproduction number, or R_0, which tells us how easily a disease can spread in a population. 
 
 The problem is that reliable data for these traits — especially at different temperatures — is limited and often noisy. Instead of drawing a single best-fit curve through the data, the paper we are following uses a Bayesian approach with a technique called Markov Chain Monte Carlo (MCMC) to model the uncertainty. This method creates a range of possible trait curves, not just one, and gives us a clearer picture of how confident we are in the estimates.
 
-In our project, we recreate part of this modeling framework using publicly available data from the VectorByte platform. We focus on two or three key traits: mosquito development rate (MDR), parasite development rate (PDR), and possibly mosquito bite rate. Using Bayesian methods and JAGS, we fit temperature-performance curves for these traits, visualize their uncertainty, and show how this uncertainty can impact larger models of disease transmission like R_0.
-
 ## 1. Data Collection
 
 The authors assembled two types of datasets:
 
-- **Main data**: Laboratory data under constant temperature, focused on Anopheles gambiae and Plasmodium falciparum. These data were only available for a few traits like mosquito development rate (MDR), egg-to-adult survival (pEA), and adult mosquito mortality ($\mu$).
+- **Main data**: Laboratory data under constant temperature, focused on Anopheles gambiae and Plasmodium falciparum. These data were only available for three traits  mosquito development rate (MDR), egg-to-adult survival (pEA), and adult mosquito mortality ($\mu$). For other traits ideal data, the researcher used data from related species.
 - **Prior data**: A broader set that included similar traits from related species and less controlled experiments. This dataset was used to construct informative priors in the Bayesian models.
 
-### Plasmodium Falciparum
+### Plasmodium Falciparum (parasite)
 ```{r, echo=FALSE, message=FALSE}
 library(DT)
 library(readxl)
@@ -44,12 +38,12 @@ datatable(
   filter = 'top',
   callback = JS(
     "$('table.dataTable').css({'font-size': '13px'});",
-    "$('table.dataTable tbody td').css({'padding': '5px'});"
+    "$('table.dataTable tbody td').css({'padding': '1px'});"
   )
 )
 ```
 
-### Anopheles Gambiae
+### Anopheles Gambiae (mosquitoes)
 ```{r, echo=FALSE, message=FALSE}
 # Render second table
 datatable(
@@ -67,48 +61,314 @@ datatable(
   filter = 'top',
   callback = JS(
     "$('table.dataTable').css({'font-size': '13px'});",
-    "$('table.dataTable tbody td').css({'padding': '5px'});"
+    "$('table.dataTable tbody td').css({'padding': '1px'});"
   )
 )
 ```
 
-## 2. Modeling Thermal Responses
+## 2. Bayesian Inference Workflow
 
-Each biological trait (component of the basic reproductive number, R₀) was modeled as a **unimodal response to temperature**, typically hump-shaped.
+In this study, Bayesian inference is used to estimate the thermal responses of individual biological traits that drive malaria transmission. The goal is to determine how key mosquito and parasite traits vary with temperature, and ultimately, how this affects the basic reproduction number R_0.
 
-Two types of thermal performance functions were used:
+The Bayesian approach proceeds in three major steps:
 
-- **Brière Model** (asymmetric, for traits like MDR):
-  $$
-  f(T) = a \cdot T \cdot (T - T_0) \cdot \sqrt{T_m - T}
-  $$
+### 1.  Define a Likelihood Function
 
-- **Quadratic Model** (symmetric, for other traits):
-  $$
-  f(T) = -a \cdot (T - T_{opt})^2 + b
-  $$
+For each biological trait (e.g., mosquito development rate, parasite development rate), a thermal response curve—either a Brière (asymmetric) or quadratic (symmetric) function—is chosen to describe how the trait changes with temperature. The observed data are then modeled as arising from a truncated normal distribution centered around this function, with lower truncation at zero to reflect biological constraints (e.g., traits like development rate cannot be negative). For traits that are probabilities (e.g., vector competence), a binomial likelihood is used if raw count data are available.
 
-Choice of function was based on the biological properties of each trait.
+### 2.	Specify Prior Distributions
 
-## 3. Likelihoods and Constraints
+Prior distributions are selected for the parameters of the thermal response functions, including biologically motivated temperature bounds (e.g., 0°C–45°C). Initially, uninformative priors are used to allow the data to dominate the inference. Later, informative priors are constructed by fitting the model to a broader prior dataset, and then summarizing the resulting posterior estimates to inform the main analysis. This two-step prior construction helps stabilize the inference when main data are sparse or noisy.
 
-- Most traits used a **truncated normal likelihood**, which ensures outputs are biologically feasible 
+### 3.	Sample from the Posterior via MCMC
+	
+Once likelihood and priors are specified, inference proceeds by generating posterior samples using Markov Chain Monte Carlo (MCMC) techniques such as JAGS. These samples represent plausible combinations of parameter values given both the prior knowledge and the observed data. From these, the posterior mean curves and credible intervals (e.g., 95% HPD bands) are derived to quantify uncertainty.
 
-- For probability traits (like vector competence or survival), the authors used a **binomial likelihood** when raw counts were available.
+#### 2.1 Likelihood Definition
 
-- All values were constrained within biologically meaningful ranges. For example, traits expressed as probabilities were constrained to [0, 1].
+We will use the parasite deveolpment rate (PDR) as an illustration of the general workflow. According to the paper, researchers assumed that trait values vary nonlinearly with temperature and exhibit a unimodal, asymmetric pattern. This biological response was modeled using a Brière function, a common choice for temperature-dependent traits that increase sharply, peak at an intermediate temperature, and decline at high temperatures:
 
-## 4. Bayesian Inference Workflow
+$$f(T) = c \cdot T \cdot (T - T_0) \cdot \sqrt{T_m - T}, \quad \text{for } T_0 < T < T_m$$
+Here:
+- T is the temperature (°C),
+- $T_0$ is the lower developmental threshold,
+- $T_m$ is the upper thermal limit,
+- c is a scaling constant.
 
-Each trait was modeled individually with the following steps:
+To connect this deterministic curve to the observed data, we assume that each observed PDR value $Y_i$ (e.g., from a lab experiment) is a noisy realization of the theoretical value $f(T_i)$, where $T_i$ is the temperature at which the observation was recorded. This noise is modeled using a truncated normal distribution, ensuring all simulated values remain biologically meaningful (i.e., non-negative):
 
-1. **Define the likelihood** using the selected functional form (Brière or quadratic).
-2. **Assign priors**:
-   - Start with **uninformative priors** (flat/diffuse).
-   - Later use **informative priors** derived from the prior dataset and expert opinion.
-3. **Run MCMC** in **JAGS** to sample from the posterior distribution of parameters:
-   - Brière: `a`, `T₀`, `Tₘ`, `σ`
-4. **Generate fitted curves** using the posterior draws:
-   - Median curve (posterior mean)
-   - 95% credible interval envelope
+$$Y_i \sim \text{Normal}\left(f(T_i), \sigma^2\right) \quad \text{truncated at } 0$$
 
+#### 2.2 Prior Distribution
+
+In the Bayesian framework, prior distributions express our beliefs about the parameters before seeing the data. For the parasite development rate (PDR), the model includes four parameters: the lower thermal limit $T_0$, upper thermal limit $T_m$, a scaling constant c, and a standard deviation $\sigma$ representing observation noise.
+
+Based on biological constraints and prior studies (as described in the paper and Appendix A.3), the following priors were chosen:
+
+- $T_0$ (lower bound of development):
+We assume development does not occur below roughly 5°C. So we used a truncated normal prior:
+$T_0 \sim \text{Normal}(12.3, 2.5^2) \text{ truncated at } [0, ]$
+```{r, echo=FALSE}
+library(ggplot2)
+library(truncnorm)
+
+# Parameters for the truncated normal
+mean_T0 <- 12.3
+sd_T0 <- 2.5
+
+# Truncation bounds
+lower <- 0
+upper <- Inf
+
+# Generate samples from the truncated normal
+set.seed(123)
+samples_T0 <- rtruncnorm(10000, a = lower, b = upper, mean = mean_T0, sd = sd_T0)
+
+# Plot
+ggplot(data.frame(T0 = samples_T0), aes(x = T0)) +
+  geom_density(fill = "steelblue", alpha = 0.6) +
+  labs(title = expression(paste("Prior for ", T[0], ": Truncated Normal(12.3, ", 2.5^2, ")")),
+       x = expression(T[0]),
+       y = "Density") +
+  theme_minimal(base_size = 14)
+```
+
+- $T_m$ (upper limit of development):
+Mosquitoes and malaria parasites typically die or stop developing near 40°C. We used:
+$T_m \sim \text{Normal}(35, 1.0^2) \text{ truncated at } [T_0, 45]$
+```{r, echo=FALSE}
+library(ggplot2)
+library(truncnorm)
+
+# Parameters for Tm prior
+mean_Tm <- 35
+sd_Tm <- 1.0
+T0_fixed <- 12.3  # Lower bound is T0
+upper <- 45
+
+# Sample from the truncated normal
+set.seed(456)
+samples_Tm <- rtruncnorm(10000, a = T0_fixed, b = upper, mean = mean_Tm, sd = sd_Tm)
+
+# Plot
+ggplot(data.frame(Tm = samples_Tm), aes(x = Tm)) +
+  geom_density(fill = "darkorange", alpha = 0.6) +
+  labs(title = expression(paste("Prior for ", T[m], ": Truncated Normal(35, ", 1.0^2, ") on [", T[0], ", 45]")),
+       x = expression(T[m]),
+       y = "Density") +
+  theme_minimal(base_size = 14)
+```
+
+- c (scaling parameter of the Brière function):
+The scaling constant c controls the overall height of the thermal curve. Since it must be positive and is hard to predict precisely, we used a weakly informative gamma prior:
+$c \sim \text{Gamma}(2, 40000)$
+```{r, echo=FALSE}
+library(ggplot2)
+
+# Parameters for the gamma distribution
+shape_c <- 2
+rate_c <- 40000
+
+# Create a sequence of c values
+c_vals <- seq(0, 0.0002, length.out = 1000)
+density_vals <- dgamma(c_vals, shape = shape_c, rate = rate_c)
+
+# Plot
+ggplot(data.frame(c = c_vals, density = density_vals), aes(x = c, y = density)) +
+  geom_line(color = "darkblue", size = 1) +
+  labs(title = expression(paste("Prior for ", c, ": Gamma(2, 40000)")),
+       x = "c", y = "Density") +
+  theme_minimal(base_size = 14)
+```
+I honetly don't know why we choose this but just based on the graph this puts most of the prior mass near zero but allows a long right tail.
+
+- $\sigma$ (standard deviation of noise):
+We assume the variability in the observations is positive but small. So:
+$\sigma \sim \text{Uniform}(0, 1)$
+```{r, echo=FALSE}
+library(ggplot2)
+
+# Define values and uniform density
+sigma_vals <- seq(0, 1, length.out = 500)
+density_vals <- dunif(sigma_vals, min = 0, max = 1)
+
+# Plot
+ggplot(data.frame(sigma = sigma_vals, density = density_vals), aes(x = sigma, y = density)) +
+  geom_line(color = "darkgreen", size = 1) +
+  labs(title = expression(paste("Prior for ", sigma, ": Uniform(0, 1)")),
+       x = expression(sigma), y = "Density") +
+  theme_minimal(base_size = 14)
+```
+
+#### 2.3 Posterior Sampling via MCMC
+
+Mathematically, Bayes’ theorem tells us:
+$\text{Posterior} \propto \text{Likelihood} \times \text{Prior}$
+But in practice, this product cannot be simplified or integrated analytically, especially when our model is nonlinear (like the Brière function for PDR) and high-dimensional.
+
+This is where Markov Chain Monte Carlo (MCMC) comes in as we mentioned before.
+
+The Tool: JAGS
+```{r, warning=FALSE}
+library(rjags)
+```
+
+To estimate the posterior, we used JAGS (Just Another Gibbs Sampler). It allows us to simulate draws from the posterior distribution, even when the model is complex and has truncated or nonlinear components.
+
+In our case, we used MCMC to sample from the joint posterior of the four parameters:$T_0, T_m, c, \sigma$
+
+The Process:
+
+We ran 3 parallel chains to ensure convergence from different starting points.
+	-	Each chain ran for 5000 iterations, with a 1000-iteration burn-in period to discard the early “warm-up” samples.
+	- In total, this gave us 12,000 posterior samples (3 chains × 4000 samples each).
+
+The JAGS output gave us:
+	- Posterior means (best estimate for each parameter)
+	- 95% credible intervals (uncertainty)
+	- Diagnostics like effective sample size and trace plots
+
+These samples allow us to:
+	- Estimate the PDR curve across temperature
+	- Quantify uncertainty (via credible bands)
+	- Propagate this uncertainty into the final R_0 calculation
+# Inference in Bayesian framework
+
+Usually proceed in three steps.
+
+1. A likelihood is defined for each type of data.
+2. Appropriate prior distributions are determined. 
+3. Samples from the posterior distribution of hte parameters via MCMC. 
+
+```{r,warning=FALSE}
+library(rjags)
+library(tidyverse)
+library(here)
+
+# Load data
+mosquitoes1 <- readxl::read_excel(here("data", "the_one_we_need.xlsx"))
+
+# Filter and prepare PDR data
+pdr_data <- mosquitoes1 %>%
+  filter(OriginalTraitName == "EIP (extrinsic incubation period)",
+         !is.na(Interactor1Temp),
+         !is.na(OriginalTraitValue)) %>%
+  mutate(
+    temp = as.numeric(Interactor1Temp),
+    pdr = 1 / as.numeric(OriginalTraitValue)
+  ) %>%
+  arrange(temp)
+
+# Define JAGS model string
+jags_model <- "
+model {
+  for (i in 1:N) {
+    pdr[i] ~ dnorm(mu[i], tau)
+    mu[i] <- c * temp[i] * (temp[i] - T0) * sqrt(Tm - temp[i])
+  }
+
+  # Priors (informative)
+  T0 ~ dnorm(14, 1 / (3.5^2))
+  tm ~ dgamma(14.7, 3.1)
+  Tm <- 31 + tm
+  c ~ dexp(100)
+
+  # Likelihood precision
+  tau <- pow(sigma, -2)
+  sigma ~ dunif(0, 10)
+}
+"
+
+# Bundle data for JAGS
+data_jags <- list(
+  temp = pdr_data$temp,
+  pdr = pdr_data$pdr,
+  N = nrow(pdr_data)
+)
+
+# Initial values
+inits <- function() {
+  list(T0 = 14, tm = 5, c = 0.001, sigma = 1)
+}
+
+# Parameters to monitor
+params <- c("T0", "Tm", "c", "sigma")
+
+# Run the JAGS model
+model <- jags.model(textConnection(jags_model), data = data_jags, inits = inits, n.chains = 3)
+update(model, 1000)  # Burn-in
+samples <- rjags::coda.samples(model, variable.names = params, n.iter = 4000)
+
+# Summarize posterior
+summary(samples)
+```
+
+```{r, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+library(coda)
+library(tidyr)
+
+# Step 1: Extract summary statistics
+summary_stats <- summary(samples)
+post_means <- summary_stats$statistics[, "Mean"]
+T0 <- post_means["T0"]
+Tm <- post_means["Tm"]
+c_param <- post_means["c"]
+
+# Step 2: Define the Brière function
+briere <- function(T, T0, Tm, c) {
+  out <- c * T * (T - T0) * sqrt(Tm - T)
+  out[T <= T0 | T >= Tm] <- 0
+  return(out)
+}
+
+# Step 3: Generate prediction ribbon from posterior draws
+posterior_df <- do.call(rbind, samples)
+temps <- seq(5, 45, length.out = 200)
+pred_matrix <- apply(posterior_df, 1, function(row) {
+  briere(temps, row["T0"], row["Tm"], row["c"])
+})
+pred_summary <- data.frame(
+  temp = temps,
+  mean = rowMeans(pred_matrix),
+  lwr = apply(pred_matrix, 1, quantile, 0.025),
+  upr = apply(pred_matrix, 1, quantile, 0.975)
+)
+
+# Step 4: Clean observed data
+pdr_data_clean <- mosquitoes1 %>%
+  filter(OriginalTraitName == "parasite development rate (1/EIP)") %>%
+  mutate(
+    temp = as.numeric(Interactor1Temp),
+    PDR = as.numeric(OriginalTraitValue),
+    species_marker = case_when(
+      Interactor1Species == "gambiae" ~ "An. gambiae",
+      grepl("falciparum", OriginalTraitDef, ignore.case = TRUE) ~ "Other anopheline",
+      TRUE ~ "Other"
+    ),
+    shape = case_when(
+      species_marker == "An. gambiae" ~ 19,  # solid circle
+      species_marker == "Other anopheline" ~ 3,  # plus
+      TRUE ~ 8  # star
+    )
+  ) %>%
+  filter(!is.na(temp), !is.na(PDR))
+
+# Step 5: Plot
+ggplot() +
+  geom_ribbon(data = pred_summary, aes(x = temp, ymin = lwr, ymax = upr), alpha = 0.2, linetype = "dashed") +
+  geom_line(data = pred_summary, aes(x = temp, y = mean), size = 1) +
+  geom_point(data = pdr_data_clean, aes(x = temp, y = PDR, shape = species_marker), size = 2) +
+  scale_shape_manual(values = c("An. gambiae" = 19, "Other anopheline" = 3, "Other" = 8)) +
+  labs(
+    x = "Temperature (°C)",
+    y = "Parasite development rate, PDR",
+    shape = "Species"
+  ) +
+  theme_minimal()
+```
+
+Here we finally reproduced the posterior for PDR: )
+
+![](figures/PDR.jpg){width=80% fig-align="center"}

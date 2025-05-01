@@ -197,6 +197,93 @@ window.Quarto = {
 <h1>What Is This Paper About?</h1>
 <p>At its core, this paper tries to better understand how temperature affects the transmission of malaria, a disease caused by a parasite and spread by mosquitoes. More specifically, it looks at how different biological traits like, how fast mosquitoes grow or how quickly parasites develop, change depending on temperature.</p>
 <p>These temperature-sensitive traits are key parts of a formula called <span class="math inline">\(R_0\)</span>, which is the basic reproduction number. In simple terms, <span class="math inline">\(R_0\)</span> tells us how easily a disease can spread in a population. If <span class="math inline">\(R_0\)</span> is high, an outbreak can happen. If it’s low, the disease dies out.</p>
+<p>The most widely used formulation for malaria <span class="math inline">\(R_0\)</span> (Diez 1993) defrived from the Ross-Macdonald Model (1952): <span class="math display">\[
+R_0 = \sqrt{\frac{M}{Nr} \times \frac{a^2 bc \exp(-\mu/\text{PDR})}{\mu}}
+\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 32%">
+<col style="width: 37%">
+<col style="width: 5%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Definition</th>
+<th>Prior Species</th>
+<th>Prior Sources</th>
+<th>Main Species</th>
+<th>Main Sources</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>a</em></td>
+<td>biting rate</td>
+<td><em>Aedes albopictus</em></td>
+<td>Calado and Navarro-Silva (2002), Delatte et al.&nbsp;(2009)</td>
+<td><em>An. pseudopunctipennis</em></td>
+<td>Lardeux et al.&nbsp;(2008)</td>
+</tr>
+<tr class="even">
+<td>MDR</td>
+<td>mosquito development rate</td>
+<td><em>An. gambiae, An. quadrimaculatus, Aedes triseriatus, Aedes aegypti, An. superpictus</em></td>
+<td>Jepson et al.&nbsp;(1947), Love and Whlechel (1957), Jalil (1972), Joshi et al.&nbsp;(1996), Briegel et al.&nbsp;(2001), Aytekin et al.&nbsp;(2009)</td>
+<td><em>An. gambiae</em></td>
+<td>Bayoh and Lindsay (2003)</td>
+</tr>
+<tr class="odd">
+<td><em>pₑₐ</em></td>
+<td>egg to adult survival</td>
+<td><em>An. quadrimaculatus, Aedes triseriatus, Aedes albopictus</em></td>
+<td>Love and Whlechel (1957), Jalil (1972), Delatte et al.&nbsp;(2009)</td>
+<td><em>An. gambiae</em></td>
+<td>Bayoh and Lindsay (2003)</td>
+</tr>
+<tr class="even">
+<td>EFD</td>
+<td>fecundity</td>
+<td><em>Aedes aegypti</em></td>
+<td>Joshi et al.&nbsp;(1996)</td>
+<td><em>Aedes albopictus</em></td>
+<td>Calado and Navarro-Silva (2002), Delatte et al.&nbsp;(2009)</td>
+</tr>
+<tr class="odd">
+<td>μ</td>
+<td>mosquito mortality rate</td>
+<td><em>Aedes aegypti, An. superpictus</em></td>
+<td>Joshi et al.&nbsp;(1996), Aytekin et al.&nbsp;(2009), Costantini et al.&nbsp;(1996), Gary &amp; Foster (2004), Impoinvil et al.&nbsp;(2007), Midega et al.&nbsp;(2007), Okech et al.&nbsp;(2003)</td>
+<td><em>An. gambiae</em></td>
+<td>Bayoh (2001)</td>
+</tr>
+<tr class="even">
+<td>bc</td>
+<td>vector competence</td>
+<td><em>P. relictum</em> in <em>Culex quinquefasciatus</em></td>
+<td>LaPointe et al.&nbsp;(2010)</td>
+<td><em>P. vivax</em> in <em>An. quadrimaculatus</em></td>
+<td>Stratman-Thomas (1940)</td>
+</tr>
+<tr class="odd">
+<td>PDR</td>
+<td>parasite development rate</td>
+<td><em>P. vivax</em> in <em>An. quadrimaculatus</em>, <em>P. falciparum</em> in <em>An. gambiae</em></td>
+<td>Stratman-Thomas (1940), Cambournac (1942), Boyd (1949)</td>
+<td><em>P. falciparum</em> in <em>An. gambiae</em>, <em>An. culicifacies, An. stephensi, An. quadrimaculatus, An. atroparvus</em></td>
+<td>Boyd and Stratman-Thomas (1933), Knowles and Basu (1943), Siddons (1944), Shute and Maryon (1952), Vaughan et al.&nbsp;(1992), Eling et al.&nbsp;(2001)</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><em>Note:</em> EIP is the extrinsic incubation period of the parasite.</p>
+</blockquote>
+<p>And the expected mosquito density is given by: <span class="math display">\[
+M = \frac{\text{EFD} \cdot p_{EA} \cdot \text{MDR}}{\mu^2}
+\]</span></p>
 <p>But to build this <span class="math inline">\(R_0\)</span> model, the authors first need to estimate how these traits behave across temperatures. And that’s where the challenge begins.</p>
 </section>
 <section id="the-big-obstacle" class="level1">

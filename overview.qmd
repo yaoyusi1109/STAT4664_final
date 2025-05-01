@@ -6,6 +6,28 @@ At its core, this paper tries to better understand how temperature affects the t
 
 These temperature-sensitive traits are key parts of a formula called $R_0$, which is the basic reproduction number. In simple terms, $R_0$ tells us how easily a disease can spread in a population. If $R_0$ is high, an outbreak can happen. If it’s low, the disease dies out.
 
+The most widely used formulation for malaria $R_0$ (Diez 1993) defrived from the Ross-Macdonald Model (1952):
+$$
+R_0 = \sqrt{\frac{M}{Nr} \times \frac{a^2 bc \exp(-\mu/\text{PDR})}{\mu}}
+$$
+
+| Parameter | Definition               | Prior Species                                                                                          | Prior Sources                                                                                                          | Main Species    | Main Sources                         |
+|-----------|---------------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|------------------|----------------------------------------|
+| *a*       | biting rate               | *Aedes albopictus*                                                                                     | Calado and Navarro-Silva (2002), Delatte et al. (2009)                                                                 | *An. pseudopunctipennis* | Lardeux et al. (2008)                 |
+| MDR       | mosquito development rate | *An. gambiae, An. quadrimaculatus, Aedes triseriatus, Aedes aegypti, An. superpictus*                 | Jepson et al. (1947), Love and Whlechel (1957), Jalil (1972), Joshi et al. (1996), Briegel et al. (2001), Aytekin et al. (2009) | *An. gambiae*     | Bayoh and Lindsay (2003)             |
+| *pₑₐ*     | egg to adult survival     | *An. quadrimaculatus, Aedes triseriatus, Aedes albopictus*                                             | Love and Whlechel (1957), Jalil (1972), Delatte et al. (2009)                                                           | *An. gambiae*     | Bayoh and Lindsay (2003)             |
+| EFD       | fecundity                 | *Aedes aegypti*                                                                                        | Joshi et al. (1996)                                                                                                     | *Aedes albopictus* | Calado and Navarro-Silva (2002), Delatte et al. (2009) |
+| μ         | mosquito mortality rate   | *Aedes aegypti, An. superpictus*                                                                       | Joshi et al. (1996), Aytekin et al. (2009), Costantini et al. (1996), Gary & Foster (2004), Impoinvil et al. (2007), Midega et al. (2007), Okech et al. (2003) | *An. gambiae*     | Bayoh (2001)                          |
+| bc        | vector competence         | *P. relictum* in *Culex quinquefasciatus*                                                              | LaPointe et al. (2010)                                                                                                  | *P. vivax* in *An. quadrimaculatus* | Stratman-Thomas (1940)               |
+| PDR       | parasite development rate | *P. vivax* in *An. quadrimaculatus*, *P. falciparum* in *An. gambiae*                                  | Stratman-Thomas (1940), Cambournac (1942), Boyd (1949)                                                                  | *P. falciparum* in *An. gambiae*, *An. culicifacies, An. stephensi, An. quadrimaculatus, An. atroparvus* | Boyd and Stratman-Thomas (1933), Knowles and Basu (1943), Siddons (1944), Shute and Maryon (1952), Vaughan et al. (1992), Eling et al. (2001) |
+
+> *Note:* EIP is the extrinsic incubation period of the parasite.
+
+And the expected mosquito density is given by:
+$$
+M = \frac{\text{EFD} \cdot p_{EA} \cdot \text{MDR}}{\mu^2}
+$$
+
 But to build this $R_0$ model, the authors first need to estimate how these traits behave across temperatures. And that’s where the challenge begins.
 
 # The Big Obstacle
