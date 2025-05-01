@@ -5,9 +5,23 @@ library(readr)
 library(DT)
 ```
 
-To replicate the trait-temperature modeling from Johnson et al., we applied Bayesian inference to multiple biological traits. Each trait was modeled individually using a biologically appropriate function (either Brière or quadratic), with parameters inferred via MCMC using JAGS. We began with a detailed model for juvenile mosquito survival to validate our workflow and then applied the same framework to other traits: mosquito development rate (MDR), oocyst prevalence, and oocyst intensity.
-
 # Trait Modeling Expansion to 4 other traits
+
+::: {.callout}
+To replicate the trait-temperature modeling from Johnson et al., we applied Bayesian inference to multiple biological traits. Each trait was modeled individually using a biologically appropriate function (either Brière or quadratic), with parameters inferred via MCMC using JAGS. We began with a detailed model for juvenile mosquito survival to validate our workflow and then applied the same framework to other traits: mosquito development rate (MDR), oocyst prevalence, and oocyst intensity.
+:::
+
+| Parameter | Definition                                 | Functional form             |
+|-----------|--------------------------------------------|-----------------------------|
+| *a*       | bite rate (1/gonotrophic cycle length)     | Brière                      |
+| MDR       | mosquito development rate                  | Brière                      |
+| *p*<sub>EA</sub> | egg to adult survival                   | quadratic                   |
+| EFD       | fecundity (eggs·female⁻¹·day⁻¹)            | quadratic                   |
+| μ         | mosquito mortality rate                    | quadratic                   |
+| bc        | vector competence                          | quadratic (and Brière)      |
+| PDR       | parasite development rate (1/EIP)          | Brière                      |
+
+> *Note*: EIP is the extrinsic incubation period of the parasite.
 
 ## Trait 1: Survival Rate (Quadratic Model)
 
@@ -70,7 +84,9 @@ pred_df$predicted <- predict(quad_model, newdata = pred_df)
 
 ```
 
-```{r}
+The survival data for Anopheles gambiae (juvenile stage) shows a clear unimodal pattern when plotted against temperature. Despite the limited number of data points, fitting a quadratic curve allows us to visualize this thermal response reliably.
+
+```{r, warning=FALSE}
 ggplot(survival_data, aes(x = temp, y = survival_rate)) +
   geom_point(size = 2.5, color = "#1f77b4") +
   geom_line(data = pred_df, aes(x = temp, y = predicted), color = "darkred", size = 1) +
@@ -82,12 +98,10 @@ ggplot(survival_data, aes(x = temp, y = survival_rate)) +
   theme_minimal()
 
 ```
-The survival data for Anopheles gambiae (juvenile stage) shows a clear unimodal pattern when plotted against temperature. Despite the limited number of data points, fitting a quadratic curve allows us to visualize this thermal response reliably.
 
 ### JAGS Bayesian Model (Quadratic)
 
 JAGS is a method that allows you to define a probablistic model in a simple syntax. This uses MCMC to sample from the posterior distributuion of the model parameters given just our data
-
 
 ```{r}
 # Select and rename columns for clarity
@@ -147,10 +161,9 @@ mcmc_trace(samples)
 
 # Posterior summary
 summary(samples)
-
 ```
 
-We ran a 3-chain, 5000-iteration MCMC using JAGS. The trace plots for each parameter suggest good mixing and convergence. All chains overlap well, with no signs of divergence or poor exploration. This confirms the stability of the posterior estimates under our quadratic model.
+Like the exampled shown previously, we ran a 3-chain, 5000-iteration MCMC using JAGS. The trace plots for each parameter suggest good mixing and convergence. All chains overlap well, with no signs of divergence or poor exploration. This confirms the stability of the posterior estimates under our quadratic model.
 
 Posterior distributions for the model parameters suggest that the optimal temperature for survival is approximately 24.5°C, with a credible interval from 23.5°C to 25.4°C. The maximum survival rate is estimated to be around 77%. The parameter b, which controls the curve’s sharpness, is estimated near 0.0092. The residual error term (sigma) is low, indicating a tight fit despite limited data.
 
@@ -203,7 +216,6 @@ This result confirms that even with limited data, incorporating uncertainty thro
 
 Having validated our modeling workflow using the survival data, we now extend the same Bayesian framework to additional traits that contribute to malaria transmission. These traits vary in biological behavior and data quality, requiring different modeling choices for likelihoods, priors, and transformations. Below, we demonstrate this process for the rest of the traits
 
-
 ## Trait 2: Mosquito Development Rate (MDR) — Brière Model
 
 ```{r}
@@ -244,6 +256,7 @@ mdr_data <- dev_data %>%
 ```
 
 ### JAGS and Briere function
+
 ```{r}
 briere <- function(T, c, T0, Tm) {
   ifelse(T > T0 & T < Tm, c * T * (T - T0) * sqrt(Tm - T), 0)
