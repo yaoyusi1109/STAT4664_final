@@ -1,26 +1,49 @@
----
-title: "Conclusions"
-format: html
-editor: visual
----
+# Conclusions
 
-## Quarto
+## 1. Summary of Modeled Traits
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+We modeled four temperature-sensitive traits critical to malaria transmission:
 
-## Running Code
+| Trait | Model Used | Data Quality | Optimal Temperature (Topt) | Peak Value Estimate | Notes |
+|------------|------------|------------|-------------|------------|------------|
+| **Survival Rate** | Quadratic | 10 pts | \~24.5°C | \~0.77 proportion | Juvenile stage; reliable fit |
+| **MDR** | Brière | 10 pts | \~8.9–13°C (T0), \~38°C (Tm) | c ≈ 5.6e-5 | Inverted development time |
+| **Oocyst Prevalence** | Quadratic | Moderate | \~24.5°C | \~0.75–0.85 | Proportional data |
+| **Oocyst Intensity** | Quadratic (log-scale) | Moderate | \~24°C–25°C | Count scale \~1–15 | Log-normal model fit |
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
-```{r}
-1 + 1
-```
+## 2. Plot Interpretation and Uncertainty
 
-You can add options to executable code like this
+-   Trace Plots confirmed good convergence for all traits. Chains were well-mixed and overlapped, indicating reliable sampling.
+-   Posterior Predictive Plots:
+    -   Survival and MDR showed well-defined unimodal curves.
+    -   Oocyst traits displayed higher variance but retained biologically meaningful peaks.
+-   95% Credible Intervals:
+    -   Narrow for survival due to low noise.
+    -   Wider for oocyst traits, reflecting greater uncertainty in measurement and sample variability.
 
-```{r}
-#| echo: false
-2 * 2
-```
+## 3. Impact of Priors
 
-The `echo: false` option disables the printing of code (only output is displayed).
+We implemented weakly informative priors where appropriate:
+
+-   For survival, a prior centered at 0.85 aligned with observed data and biological expectations.
+-   For rate-based models like MDR, we used domain-informed constraints on `T0` and `Tm` to prevent unrealistic values.
+-   These priors stabilized MCMC behavior without dominating the likelihood, making the results more robust and biologically interpretable.
+
+## 4. Biological Insights
+
+-   Thermal Optimum: All traits peaked around **24–25°C**, reinforcing this zone as critical for vector competence and transmission efficiency.
+-   Thermal Limits: MDR and intensity rapidly declined outside this range, signaling increased developmental stress.
+-   Uncertainty Focus: Traits like oocyst intensity showed broader credible bands, especially at low and high temperature extremes — highlighting where future experiments could reduce uncertainty.
+
+## 5. Final Thoughts
+
+This project successfully replicated the modeling framework of Johnson et al. (2015), validating it across both synthetic and real trait data from *Anopheles gambiae* and *Plasmodium falciparum*. Using Bayesian inference and JAGS, we not only estimated trait performance curves, but quantified uncertainty — a vital step for downstream applications like predicting malaria risk via R₀.
+
+**Next Steps** could include:
+
+-   Propagating posterior draws into R₀ calculations
+-   Expanding to additional traits like biting rate or transmission probability
+-   Validating model generalizability across new datasets or vector-parasite pairs
+
+This work underscores how even sparse biological data, when combined with sound modeling and Bayesian thinking, can yield actionable insights in infectious disease ecology.

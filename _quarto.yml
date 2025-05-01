@@ -6,7 +6,7 @@ website:
   navbar:
     background:	"primary"
     foreground: "light"
-    logo: "graphics/vblogoedit.png"
+    logo: "figures/logo.jpg"
     left:
       - href: index.qmd
         text: Executive Summary
@@ -19,7 +19,7 @@ website:
           - href: introduction.qmd
             text: Introduction
           - href: methods.qmd
-            text: Methods
+            text: Method Expansion
           - href: conclusions.qmd
             text: Conlusions
       - href: team.qmd

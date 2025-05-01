@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Conclusions – Final Project</title>
+<title>conclusions – Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -115,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./graphics/vblogoedit.png" alt="" class="navbar-logo">
+    <img src="./figures/logo.jpg" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Final Project</span>
@@ -185,55 +150,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quarto" id="toc-quarto" class="nav-link active" data-scroll-target="#quarto">Quarto</a></li>
-  <li><a href="#running-code" id="toc-running-code" class="nav-link" data-scroll-target="#running-code">Running Code</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link active" data-scroll-target="#conclusions">Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#summary-of-modeled-traits" id="toc-summary-of-modeled-traits" class="nav-link" data-scroll-target="#summary-of-modeled-traits">1. Summary of Modeled Traits</a></li>
+  <li><a href="#plot-interpretation-and-uncertainty" id="toc-plot-interpretation-and-uncertainty" class="nav-link" data-scroll-target="#plot-interpretation-and-uncertainty">2. Plot Interpretation and Uncertainty</a></li>
+  <li><a href="#impact-of-priors" id="toc-impact-of-priors" class="nav-link" data-scroll-target="#impact-of-priors">3. Impact of Priors</a></li>
+  <li><a href="#biological-insights" id="toc-biological-insights" class="nav-link" data-scroll-target="#biological-insights">4. Biological Insights</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">5. Final Thoughts</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Conclusions</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<section id="summary-of-modeled-traits" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-modeled-traits">1. Summary of Modeled Traits</h2>
+<p>We modeled four temperature-sensitive traits critical to malaria transmission:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Trait</th>
+<th>Model Used</th>
+<th>Data Quality</th>
+<th>Optimal Temperature (Topt)</th>
+<th>Peak Value Estimate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Survival Rate</strong></td>
+<td>Quadratic</td>
+<td>10 pts</td>
+<td>~24.5°C</td>
+<td>~0.77 proportion</td>
+<td>Juvenile stage; reliable fit</td>
+</tr>
+<tr class="even">
+<td><strong>MDR</strong></td>
+<td>Brière</td>
+<td>10 pts</td>
+<td>~8.9–13°C (T0), ~38°C (Tm)</td>
+<td>c ≈ 5.6e-5</td>
+<td>Inverted development time</td>
+</tr>
+<tr class="odd">
+<td><strong>Oocyst Prevalence</strong></td>
+<td>Quadratic</td>
+<td>Moderate</td>
+<td>~24.5°C</td>
+<td>~0.75–0.85</td>
+<td>Proportional data</td>
+</tr>
+<tr class="even">
+<td><strong>Oocyst Intensity</strong></td>
+<td>Quadratic (log-scale)</td>
+<td>Moderate</td>
+<td>~24°C–25°C</td>
+<td>Count scale ~1–15</td>
+<td>Log-normal model fit</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="running-code" class="level2">
-<h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
-<p>You can add options to executable code like this</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+<section id="plot-interpretation-and-uncertainty" class="level2">
+<h2 class="anchored" data-anchor-id="plot-interpretation-and-uncertainty">2. Plot Interpretation and Uncertainty</h2>
+<ul>
+<li>Trace Plots confirmed good convergence for all traits. Chains were well-mixed and overlapped, indicating reliable sampling.</li>
+<li>Posterior Predictive Plots:
+<ul>
+<li>Survival and MDR showed well-defined unimodal curves.</li>
+<li>Oocyst traits displayed higher variance but retained biologically meaningful peaks.</li>
+</ul></li>
+<li>95% Credible Intervals:
+<ul>
+<li>Narrow for survival due to low noise.</li>
+<li>Wider for oocyst traits, reflecting greater uncertainty in measurement and sample variability.</li>
+</ul></li>
+</ul>
+</section>
+<section id="impact-of-priors" class="level2">
+<h2 class="anchored" data-anchor-id="impact-of-priors">3. Impact of Priors</h2>
+<p>We implemented weakly informative priors where appropriate:</p>
+<ul>
+<li>For survival, a prior centered at 0.85 aligned with observed data and biological expectations.</li>
+<li>For rate-based models like MDR, we used domain-informed constraints on <code>T0</code> and <code>Tm</code> to prevent unrealistic values.</li>
+<li>These priors stabilized MCMC behavior without dominating the likelihood, making the results more robust and biologically interpretable.</li>
+</ul>
+</section>
+<section id="biological-insights" class="level2">
+<h2 class="anchored" data-anchor-id="biological-insights">4. Biological Insights</h2>
+<ul>
+<li>Thermal Optimum: All traits peaked around <strong>24–25°C</strong>, reinforcing this zone as critical for vector competence and transmission efficiency.</li>
+<li>Thermal Limits: MDR and intensity rapidly declined outside this range, signaling increased developmental stress.</li>
+<li>Uncertainty Focus: Traits like oocyst intensity showed broader credible bands, especially at low and high temperature extremes — highlighting where future experiments could reduce uncertainty.</li>
+</ul>
+</section>
+<section id="final-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="final-thoughts">5. Final Thoughts</h2>
+<p>This project successfully replicated the modeling framework of Johnson et al.&nbsp;(2015), validating it across both synthetic and real trait data from <em>Anopheles gambiae</em> and <em>Plasmodium falciparum</em>. Using Bayesian inference and JAGS, we not only estimated trait performance curves, but quantified uncertainty — a vital step for downstream applications like predicting malaria risk via R₀.</p>
+<p><strong>Next Steps</strong> could include:</p>
+<ul>
+<li>Propagating posterior draws into R₀ calculations</li>
+<li>Expanding to additional traits like biting rate or transmission probability</li>
+<li>Validating model generalizability across new datasets or vector-parasite pairs</li>
+</ul>
+<p>This work underscores how even sparse biological data, when combined with sound modeling and Bayesian thinking, can yield actionable insights in infectious disease ecology.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
