@@ -218,13 +218,14 @@ Having validated our modeling workflow using the survival data, we now extend th
 
 ## Trait 2: Mosquito Development Rate (MDR) — Brière Model
 
+We can now continue the same analysis done prior for the rest of the traits, starting with the exploratory plots
+
+
 ```{r}
-# Load required libraries
 library(tidyverse)
 library(readxl)
 library(here)
 
-# Filter for Development Time (Trait)
 dev_data <- trait_data %>%
   filter(
     OriginalTraitName == "development time",
@@ -237,25 +238,30 @@ dev_data <- trait_data %>%
   mutate(
     temp = Interactor1Temp,
     development_time = as.numeric(OriginalTraitValue),
-    mdr = 1 / development_time  # Invert to get development rate
+    mdr = 1 / development_time 
   ) %>%
   drop_na(mdr)
 
-# Visualize
+
 ggplot(dev_data, aes(x = temp, y = mdr)) +
   geom_point(color = "#2ca02c", size = 2) +
   labs(title = "MDR vs Temperature (from Development Time)",
        x = "Temperature (°C)", y = "MDR (1 / days)") +
   theme_minimal()
+
 ```
 
 ```{r}
 mdr_data <- dev_data %>%
   filter(!is.na(mdr), is.finite(mdr), mdr >= 0) %>%
   rename(rate = mdr)
+
+  
 ```
 
 ### JAGS and Briere function
+
+We decided to use a briere function instead of a quadratic function due to the properties of the data
 
 ```{r}
 briere <- function(T, c, T0, Tm) {
@@ -390,6 +396,9 @@ ggplot() +
 This plot shows the posterior predictive fit for Mosquito Development Rate (MDR) as a function of temperature. The orange curve represents the median predicted rate based on posterior samples, while the shaded region is the 95% credible interval. The fitted curve increases and then flattens, capturing the nonlinear thermal response. However, the y-axis scaling suggests a plotting error — predicted values appear exaggerated, likely due to a bug in how the Brière predictions were generated or summarized. This should be corrected by confirming unit consistency and checking for vector recycling or incorrect exponentiation.
 
 ## Trait 3: Oocyst prevalence and intensity
+
+For Oocyst prevalence and intensity, we decided to combine them together.
+
 ```{r}
 # Load original dataset
 library(here)
@@ -426,6 +435,8 @@ oocyst_int_data <- trait_data %>%
 
 
 ```
+
+### Exploratory Plot
 
 ```{r}
 # Prevalence plot
@@ -494,7 +505,7 @@ samples_df_prev <- as.data.frame(do.call(rbind, samples_prev))
 
 ```
 
-
+### JAGS Model for Prevalence (Quadratic)
 
 ```{r}
 temp_seq <- seq(min(oocyst_prev_data$temp), max(oocyst_prev_data$temp), length.out = 200)
@@ -616,23 +627,20 @@ samples_df_intensity <- as.data.frame(do.call(rbind, samples_intensity))
 
 ```
 
+### JAGS Model for Intensity (Log-Normal)
+
 ```{r}
-# Generate predictions on log scale, then exponentiate
 temp_seq <- seq(min(intensity_data$temp), max(intensity_data$temp), length.out = 200)
 
 posterior_predictions <- sapply(temp_seq, function(t) {
   exp(samples_df_intensity$a - samples_df_intensity$b * (t - samples_df_intensity$Topt)^2)
 })
-
-# Summarize predictions
 pred_summary_intensity <- data.frame(
   temp = temp_seq,
   median = apply(posterior_predictions, 2, median),
   lower = apply(posterior_predictions, 2, quantile, 0.025),
   upper = apply(posterior_predictions, 2, quantile, 0.975)
 )
-
-# Plot
 ggplot() +
   geom_point(data = intensity_data, aes(x = temp, y = intensity), size = 2.5, color = "#9467bd") +
   geom_line(data = pred_summary_intensity, aes(x = temp, y = median), color = "black", size = 1.2) +
@@ -649,6 +657,7 @@ ggplot() +
 
 Here, we visualize posterior predictions for oocyst intensity using a log-normal quadratic model. The black curve and gray ribbon show the median and 95% credible interval of predicted counts, respectively. Despite minimal data, the model finds a weak peak near 18.5°C, suggesting a preferred temperature for parasite proliferation, albeit with wide uncertainty.
 
+### Trace Plots
 
 ```{r}
 # Trace plots for oocyst prevalence model
@@ -662,3 +671,6 @@ mcmc_trace(samples_intensity)
 The first plot displays the MCMC sampling behavior for the four model parameters (Topt, a, b, sigma) in the oocyst prevalence model. All chains mix well and appear stationary, with no visible divergence. This indicates reliable posterior estimates for downstream inference.
 
 The second trace plots for the oocyst intensity model demonstrate stable mixing across three chains. Parameters converge well, particularly Topt and sigma, although b and a exhibit higher variance. The results are sufficient for posterior prediction but would benefit from more temperature-diverse data to reduce uncertainty.
+
+
+

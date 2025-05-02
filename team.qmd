@@ -1,6 +1,6 @@
 Yusi: 
 
-basically everything throught the project
+Developed and implemented the full Quarto framework, including all major components of the project
 
 Rahulr:
 
